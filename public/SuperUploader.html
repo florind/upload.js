@@ -1,23 +1,27 @@
 <html>
 	<head>
 		<title>SuperUpload</title>
-		<script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js'></script>
+		<script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js'></script>
+    <!--script type='text/javascript' src='http://plugins.jquery.com/files/jquery-custom-file-input.js.txt'></script-->
+
+		<!--script type="text/javascript">	
+			$(function() {
+				$('#filepicker').choose(function(e, input) {
+					alert('you choose ' + input.val());
+				}
+			}
+		</script-->
 	</head>
 	<body>
 			<h2>SuperUpload</h2>
-	<script>
-		$(document).ready(function() {
-			$("input[name='upload-file')
-		});
-	</script>	
 	<form id='uploadForm' action='/upload' method='post' enctype='multipart/form-data'>
 		<table>
 			<tr>
 				<td>
-					<input name='filepath' type='text'/>
+					<input id='filepath' name='filepath' type='text'/>
 				</td>
 				<td>
-				<input type='file' name='upload-file' size='30'/>
+				<input id='filepicker' type='file' name='upload-file' size='30'/>
 				</td>
 			</tr>
 			<tr>
