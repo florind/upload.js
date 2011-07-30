@@ -1,43 +1,73 @@
 <html>
-	<head>
-		<title>SuperUpload</title>
-		<script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js'></script>
-    <!--script type='text/javascript' src='http://plugins.jquery.com/files/jquery-custom-file-input.js.txt'></script-->
+<head>
+	<title>SuperUpload</title>
+	<script src='http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js'></script>
+	<script>
+		document.upload = function() {
+			document.getElementById('statusText').style.display = 'block';
+			var statusDiv =  document.getElementById('uploadStatus');
+			statusDiv.innerHTML = '';
+		
+			var theFile = document.getElementById('uploadfile').files[0];
+			var formData = new FormData();
+			formData.append(theFile.name, theFile);
 
-		<!--script type="text/javascript">	
-			$(function() {
-				$('#filepicker').choose(function(e, input) {
-					alert('you choose ' + input.val());
-				}
+			var xhr = new XMLHttpRequest();
+			xhr.upload.addEventListener("progress", updateProgress, false);
+		
+	    xhr.onreadystatechange = function() {
+	        if (xhr.readyState == 4) {
+		        if(xhr.status == 201) {
+	        		statusDiv.innerHTML = '<a href="' + xhr.responseText + '">' + 'Uploaded to here</a>';
+							document.getElementById('fileLink').value = xhr.responseText;
+		        } else {
+			        statusDiv.innerHTML = 'error, status ' + xhr.status;
+		        }
+	        }
+	    };
+
+	    xhr.open("POST", '/upload', true);
+			xhr.send(formData);
+		}
+	
+		function updateProgress(evt) {
+			var statusDiv = document.getElementById('uploadStatus');
+			if (evt.lengthComputable) {
+				var percentComplete = Math.round((evt.loaded / evt.total) * 100);
+				statusDiv.innerHTML = percentComplete + "%. ";
+			} else {
+				statusDiv.innerHTML('uploading...');
 			}
-		</script-->
+		}
+
+
+	    </script>
 	</head>
 	<body>
-			<h2>SuperUpload</h2>
-	<form id='uploadForm' action='/upload' method='post' enctype='multipart/form-data'>
-		<table>
+	<h2>SuperUpload</h2>
+	<form id='uploadForm' action='/attachment' method='post'>
+		<input type='hidden' id='fileLink'/>
+		<input type='hidden' id='fileName'/>
+	<table>
+		<tr>
+			<td><input type="file" id="uploadfile" onchange="upload()"/></td>
+		</tr>
+		<tr>
 			<tr>
 				<td>
-					<input id='filepath' name='filepath' type='text'/>
+					<div style='float:left;'>&nbsp;</div>
+					<div style='float:left;display:none;' id='statusText'>Status:&nbsp;&nbsp;</div><div style='float:left;' id='uploadStatus'></div>
 				</td>
-				<td>
-				<input id='filepicker' type='file' name='upload-file' size='30'/>
-				</td>
-			</tr>
-			<tr>
-			<tr>
-				<td colspan='2' id='uploadStatus'>&nbsp;</td>
-			<tr>
-				<td colspan='2'>
-					<textarea name='comment' rows='5' cols='30'>
-					</textarea>
-				</td>
-			</tr>
-			<tr>
-				<td colspan='2' align='right'>
-					<input type='submit' value='Save'/>
-				</td>
-			</tr>	
-	</form>
+				<tr>
+					<td><textarea name='comment' rows='5' cols='30'>
+	          </textarea></td>
+				</tr>
+				<tr>
+					<td align='right'><input type='submit' value='Save' />
+					</td>
+				</tr>
+				</form>
 	</body>
 </html>
+
+
