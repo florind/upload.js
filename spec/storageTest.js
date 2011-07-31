@@ -8,11 +8,11 @@ exports['Should store the file path'] = function(test) {
 	test.ok(key != null, "The key was null");
 	test.done();
 }
-exports['Should retrieve the contents of a file by its key'] = function(test) {
+exports['Should retrieve the local file path by its key'] = function(test) {
 	var filePath = 'spec/testdoc.txt';
 	var key = storage.put(filePath);
-	var fileContent = storage.get(key);
-	test.ok(bufferEquals(fileContent, fs.readFileSync(filePath)), "File contents from storage not equal to original file");
+	var localPath = storage.get(key);
+	test.equals(localPath, filePath);
 	test.done();
 }
 

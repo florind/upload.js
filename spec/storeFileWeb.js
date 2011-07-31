@@ -13,6 +13,9 @@ exports['Page should properly render'] =function(test) {
 		test.equal(status, 200);
 		test.equal(browser.text("title"), "SuperUpload");	
 		test.equal(browser.document.getElementById("uploadForm").tagName.toUpperCase(), "FORM");
+		test.ok(browser.document.querySelector(':input[name:comment]') != null);
+		test.ok(browser.document.querySelector(':input[name:fileLink]') != null);
+		test.ok(browser.document.querySelector(':input[name:Save]') != null);
 		test.done();
 	});
 }
