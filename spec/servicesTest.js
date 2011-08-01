@@ -1,16 +1,23 @@
 var http = require('http'),
+	server = require('../controller/rootDispatcher.js').server,
 	fs = require('fs');
 
 var testFilePath = './spec/testdoc.txt';
 var fname = testFilePath.split('/');
 fname = fname[fname.length-1];
 
+var serverPort = 40101;
+server.listen(serverPort);
+
+var client = http.createClient(serverPort, 'localhost');
+
 exports['GET nonexistent file should return 404 Not Found'] =function(test) {
-	var client = http.createClient(4010, 'localhost');
 	var req = client.request('GET', '/files/nothing');
 	req.on('response', function(res) {
 		res.on('end', function() {
 			test.equal(res.statusCode, 404);
+
+			cleanup();
 			test.done();
 		});
 	});
@@ -18,7 +25,6 @@ exports['GET nonexistent file should return 404 Not Found'] =function(test) {
 }
 
 exports['POST a file should return 201 Created and a valid link to the newly created resource'] = function(test) {
-	var client = http.createClient(4010, 'localhost');
 	var postData = createPostData(testFilePath);
 	var req = client.request('POST', '/upload', postData['headers']);
 	var resourceLink = '';
@@ -33,6 +39,8 @@ exports['POST a file should return 201 Created and a valid link to the newly cre
 			getFileReq.on('response', function(getFileRes) {
 				getFileRes.on('end', function() {
 					test.equal(getFileRes.statusCode, 200);
+
+					cleanup();
 					test.done();
 				});
 			});
@@ -44,7 +52,6 @@ exports['POST a file should return 201 Created and a valid link to the newly cre
 }
 
 exports['POST a corrupt data should return 400 '] = function(test) {
-	var client = http.createClient(4010, 'localhost');
 	
 	//Post null headers. This should force an error on the server.
 	var req = client.request('POST', '/upload', null);
@@ -52,6 +59,8 @@ exports['POST a corrupt data should return 400 '] = function(test) {
 		var resourceLink = '';
 		res.on('end', function() {
 			test.equal(res.statusCode, 400);
+
+			cleanup();
 			test.done();
 		});
 	});
@@ -59,9 +68,8 @@ exports['POST a corrupt data should return 400 '] = function(test) {
 	req.end();
 }
 
-exports['POST an attachment link and comment should return 201 Created \
-and the response should contain the path to that attachment'] = function(test) {
-	var client = http.createClient(4010, 'localhost');
+exports['POST an attachment link and comment should return 201 Created and the response should contain the path to that attachment'] =
+		function(test) {
 	var postData = createPostData(testFilePath);
 	var uploadReq = client.request('POST', '/upload', postData['headers']);
 	var resourceLink = '';
@@ -85,6 +93,8 @@ and the response should contain the path to that attachment'] = function(test) {
 				attachRes.on('end', function() {
 					test.equal(attachRes.statusCode, 201);
 					test.ok(attachResponseData.indexOf(resourceLink) > 0);
+
+					cleanup();
 					test.done();
 				});
 			});
@@ -97,7 +107,6 @@ and the response should contain the path to that attachment'] = function(test) {
 }
 
 exports['POST a non-existent attachment should return 400 Bad Request'] = function(test) {
-	var client = http.createClient(4010, 'localhost');
 	var postAttachment = "fileLink=nowhere&uploadfile=someFileName&comment=awesome-comment";
 	var headers = {
 		"Content-Type": "application/x-www-form-urlencoded",
@@ -112,6 +121,8 @@ exports['POST a non-existent attachment should return 400 Bad Request'] = functi
 		});
 		attachRes.on('end', function() {
 			test.equal(attachRes.statusCode, 400);
+
+			cleanup();
 			test.done();
 		});
 	});
@@ -140,4 +151,20 @@ function createPostData(filePath) {
 		'payload': payload,
 		'headers': headers
 	};
+}
+
+
+
+var globalTestCount = 5;	//total number of tests.
+var currentExecutedTestCount = 0;
+/*
+This method increments the number of executed tests
+Call cleanup() after test.done.
+shutdown the server if all tests have executed.
+*/
+function cleanup() {
+	currentExecutedTestCount++;
+	if(currentExecutedTestCount == globalTestCount) {
+		server.close();
+	}
 }
