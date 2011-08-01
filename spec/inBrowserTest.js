@@ -1,0 +1,46 @@
+var zombie = require('zombie'),
+	sys = require('sys'),
+	server = require('../controller/rootDispatcher.js').server;
+
+var serverPort = 40101;
+server.listen(serverPort);
+var browser = new zombie.Browser({debug: false})
+
+exports['Page should properly render'] = function(test) {
+	browser.runScripts = true;
+	browser.visit("http://localhost:" + serverPort, function(err, browser, status) {
+		if(err)	{
+			console.log(err.message);
+		}
+		test.equal(err, null);
+		test.equal(status, 200);
+		test.equal(browser.text("title"), "SuperUpload");	
+		test.equal(browser.document.getElementById("uploadForm").tagName.toUpperCase(), "FORM");
+		test.ok(browser.document.querySelector(':input[name:comment]') != null);
+		test.ok(browser.document.querySelector(':input[name:fileLink]') != null);
+		test.ok(browser.document.querySelector(':input[name:fileupload]') != null);
+		test.ok(browser.document.querySelector(':input[name:Save]') != null);
+		test.done();
+		cleanup();
+	});
+}
+
+/*
+Currently nodeunit doesn't support a global teardown (see this too https://github.com/caolan/nodeunit/pull/85), 
+otherwise we'd call server.close there...
+As a workaround, we keep track of the current executed tests and
+shut down the server when the count reaches the total # of tests. */
+
+var globalTestCount = 1;	//total number of tests.
+var currentExecutedTestCount = 0;
+/*
+This method increments the number of executed tests
+Call cleanup() after test.done.
+shutdown the server if all tests have executed.
+*/
+function cleanup() {
+	currentExecutedTestCount++;
+	if(currentExecutedTestCount == globalTestCount) {
+		server.close();
+	}
+}
