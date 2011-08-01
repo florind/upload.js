@@ -1,4 +1,4 @@
-upload.js is a file uploader webapp à la gmail file attachment uploader.
+upload.js is a file uploader webapp à la gmail file attachment uploader. The files are stored locally in the filestore/ directory.
 
 The following dependencies are mandatory; use npm 1.0.17 or better and run from the project root:
 npm install formidable
@@ -16,3 +16,5 @@ To run the web server, execute:
 	node controller/index.js
 
 Then hit http://localhost:8099
+
+Tested on Safari, Chrome v12.0, Firefox 5.0 and IE 9.
