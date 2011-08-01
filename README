@@ -1,14 +1,14 @@
 upload.js is a file uploader webapp à la gmail file attachment uploader.
 
-The following dependencies are mandatory (use 'npm install <dependency>', use npm 1.0.17 or better and run from the project root):
-- formidable
-- nodeunit
-- zombie
+The following dependencies are mandatory; use npm 1.0.17 or better and run from the project root:
+npm install formidable
+npm install nodeunit
+npm install zombie
 
 Runs successfully on node 0.4.10
 
 To execute the tests, execute: 
-	nodeunit spec/*.js
+	node_modules/.bin/nodeunit spec/*.js
 	
 The tests cover the storage (file system)
 
