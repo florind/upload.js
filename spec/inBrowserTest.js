@@ -25,6 +25,9 @@ exports['Page should properly render'] = function(test) {
 	});
 }
 
+//TODO: add more browser tests once we figure how to upload a file via zombie's browser.attach 
+// See https://github.com/assaf/zombie/issues/159 for more details.
+
 /*
 Currently nodeunit doesn't support a global teardown (see this too https://github.com/caolan/nodeunit/pull/85), 
 otherwise we'd call server.close there...

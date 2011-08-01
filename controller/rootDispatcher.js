@@ -1,6 +1,6 @@
 var http = require('http'), sys = require('sys'),
 	formidable = require('formidable'), 
-	url = require('url'), path = require('path'), dns = require('dns'), qs = require('querystring'),
+	url = require('url'), path = require('path'), qs = require('querystring'),
 	storage = require('../lib/storage.js'), fs = require("fs");
 
 var superUploaderFile = fs.readFileSync('public/SuperUploader.html', 'utf-8');
@@ -60,7 +60,6 @@ var uploadFile = function(req, res) {
 		res.end("Malformatted request data.");
 	}
 }
-exports.uploadFile = uploadFile;
 
 var serveFile = function(pathname, res) {
 	if(storage.get(pathname) == null) {
@@ -78,7 +77,6 @@ var serveFile = function(pathname, res) {
 		});
 	}
 }
-exports.serveFile = serveFile;
 
 var attachContent = function(req, res) {
 	var fullBody = '';
@@ -103,4 +101,8 @@ var attachContent = function(req, res) {
 		return;
 	}
 }
-exports.attachContent = attachContent;
+
+//TODO: uncomment when we figure how to unit test using mock req/responses
+//exports.attachContent = attachContent;
+//exports.serveFile = serveFile;
+//exports.uploadFile = uploadFile;
