@@ -93,7 +93,8 @@ var attachContent = function(req, res) {
 				res.end("Attached resource not found on the server.")
 			}
 			res.writeHead(201, {'Content-Type': 'text/html'});
-			res.end("Success! Here's your file: <a href='" + posted.fileLink + "'>" + posted.uploadfile + "</a>");
+			res.end("Success! Here's your file: <a href='" + posted.fileLink + "'>" + 
+			posted.uploadfile + "</a><br/><br/><a href='/'>Upload some more</a>");
 	    });
 	} catch (err) {
 		console.log("Error on posting attachment: " + err);

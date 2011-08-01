@@ -1,0 +1,13 @@
+File uploader webapp.
+To run, install the following dependencies:
+- formidable
+- nodeunit
+- zombie
+
+To execute the tests, execute: 
+	nodeunit spec/*.js
+	
+To run the web server, execute:
+	node controller/index.js
+
+then go to http://localhost:8099
