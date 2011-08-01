@@ -1,3 +1,0 @@
-[submodule "lib/multipart"]
-	path = lib/multipart
-	url = https://github.com/isaacs/multipart-js.git
