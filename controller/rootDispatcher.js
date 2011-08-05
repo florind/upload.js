@@ -45,9 +45,7 @@ function serveFile(pathname, res) {
     sendResponse(res, 404, 'File not found.');    
   } else {
     fs.readFile(storage.get(pathname), function(err, data) {
-      if (err) {
-        sendResponse(res, 404, 'File not found.');    
-      }
+      if (err) sendResponse(res, 500, 'Internal Server Error');
       res.writeHead(200, {'content-type' : 'application/binary'});
       res.end(data);
     });
@@ -67,7 +65,7 @@ function attachContent(req, res) {
     res.writeHead(201, {'Content-Type': 'text/html'});
     res.end("Success! Here's your file: <a href='" + posted.fileLink + "'>" + 
     posted.uploadfile + "</a><br/><br/><a href='/'>Upload some more</a>");
-    });
+  });
 }
 
 function sendResponse(res, status, text) {
