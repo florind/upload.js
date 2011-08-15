@@ -4,6 +4,9 @@ The following dependencies are mandatory; use npm 1.0.17 or better and run from 
 npm install formidable
 npm install nodeunit
 npm install zombie
+npm install express
+npm install connect-form
+npm install jade
 
 Runs successfully on node 0.4.10
 
@@ -17,4 +20,4 @@ To run the web server, execute:
 
 Then hit http://localhost:8099
 
-Tested on Safari, Chrome v12.0, Firefox 5.0 and IE 9.
+Tested on Safari 5.1, Chrome v12.0, Firefox 5.0 and IE 9.
