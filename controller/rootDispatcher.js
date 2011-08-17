@@ -62,7 +62,7 @@ function attachContent(req, res) {
     if(storage.get(posted.fileLink) == null) {  //front door check if the resource doesn't exist on the server
       sendResponse(res, 400, "Attached resource not found on the server.");
     }
-    res.writeHead(201, {'Content-Type': 'text/html'});
+    res.writeHead(200, {'Content-Type': 'text/html'});
     res.end("Success! Here's your file: <a href='" + posted.fileLink + "'>" + 
     posted.uploadfile + "</a><br/><br/><a href='/'>Upload some more</a>");
   });

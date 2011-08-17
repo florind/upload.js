@@ -68,7 +68,7 @@ exports['POST a corrupt data should return 400 '] = function(test) {
   req.end();
 }
 
-exports['POST an attachment link and comment should return 201 Created and the response should contain the path to that attachment'] =
+exports['POST an attachment link and comment should return 200 OK and the response should contain the path to that attachment'] =
     function(test) {
   var postData = createPostData(testFilePath);
   var uploadReq = client.request('POST', '/upload', postData['headers']);
@@ -91,7 +91,7 @@ exports['POST an attachment link and comment should return 201 Created and the r
           attachResponseData += chunk;
         });
         attachRes.on('end', function() {
-          test.equal(attachRes.statusCode, 201);
+          test.equal(attachRes.statusCode, 200);
           test.ok(attachResponseData.indexOf(resourceLink) > 0);
 
           cleanup();
