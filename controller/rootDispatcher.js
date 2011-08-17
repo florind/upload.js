@@ -63,7 +63,7 @@ function attachContent(req, res) {
     }, function (err, html) {
       res.send(html, {
         'Content-Type': 'text/html'
-      }, 201);
+      }, 200);
     });
   }
 }
