@@ -4,7 +4,7 @@ var zombie = require('zombie'),
 
 var serverPort = 40101;
 server.listen(serverPort);
-var browser = new zombie.Browser({debug: false})
+var browser = new zombie.Browser({debug: false});
 
 exports['Page should properly render'] = function(test) {
   browser.runScripts = true;
@@ -23,7 +23,7 @@ exports['Page should properly render'] = function(test) {
     test.done();
     cleanup();
   });
-}
+};
 
 //TODO: add more browser tests once we figure how to upload a file via zombie's browser.attach 
 // See https://github.com/assaf/zombie/issues/159 for more details.

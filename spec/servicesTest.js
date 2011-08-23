@@ -22,7 +22,7 @@ exports['GET nonexistent file should return 404 Not Found'] =function(test) {
     });
   });
   req.end();
-}
+};
 
 exports['POST a file should return 201 Created and a valid link to the newly created resource'] = function(test) {
   var postData = createPostData(testFilePath);
@@ -49,24 +49,22 @@ exports['POST a file should return 201 Created and a valid link to the newly cre
   });
   req.write(postData['payload']);
   req.end();
-}
+};
 
 exports['POST a corrupt data should return 400 '] = function(test) {
   
   //Post null headers. This should force an error on the server.
   var req = client.request('POST', '/upload', null);
   req.on('response', function(res) {
-    var resourceLink = '';
     res.on('end', function() {
       test.equal(res.statusCode, 400);
-
       cleanup();
       test.done();
     });
   });
   req.write("corrupt payload");
   req.end();
-}
+};
 
 exports['POST an attachment link and comment should return 200 OK and the response should contain the path to that attachment'] =
     function(test) {
@@ -104,7 +102,7 @@ exports['POST an attachment link and comment should return 200 OK and the respon
   });
   uploadReq.write(postData['payload']);
   uploadReq.end();  
-}
+};
 
 exports['POST a non-existent attachment should return 400 Bad Request'] = function(test) {
   var postAttachment = "fileLink=nowhere&uploadfile=someFileName&comment=awesome-comment";
@@ -128,7 +126,7 @@ exports['POST a non-existent attachment should return 400 Bad Request'] = functi
   });
   attachReq.write(postAttachment);
   attachReq.end();
-}
+};
 
 //Compiles the file upload payload and headers to be POSTed to the server. 
 //Returns a two element map keyed by 'payload' and 'headers'.
