@@ -1,6 +1,7 @@
 {
 	"name": "upload.js",
 	"version": "0.0.1",
+	"scripts": { "start": "node controller/index.js" },
 	"dependencies": {
 		"express": "2.2.0",
 		"formidable": "1.0.2",
