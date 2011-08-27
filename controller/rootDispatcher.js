@@ -3,11 +3,11 @@ var http = require('http'), express = require('express'), form = require('connec
 // http://visionmedia.github.com/connect-form
 url = require('url'), path = require('path'), fs = require("fs"), jade = require('jade'), storage = require('../lib/storage.js');
 
-var superUploaderFile = fs.readFileSync('public/SuperUploader.html', 'utf-8');
+var superUploaderFile;
 
-//jade.renderFile('public/SuperUploader.jade', function(err, html) {
-//	superUploaderFile = html;
-//});
+jade.renderFile('public/SuperUploader.jade', function(err, html) {
+	superUploaderFile = html;
+});
 
 var server = express.createServer(form({
 	keepExtensions : true,
@@ -32,7 +32,14 @@ server.post('/upload', function(req, res) {
 });
 
 server.get('/files/:fileId', function(req, res) {
-	res.sendfile(storage.get(url.parse(req.url).pathname));
+  var file = storage.get(url.parse(req.url).pathname);
+  if(file == null) {
+    res.send('File not found.', {
+      'Content-Type' : 'text/plain'
+    }, 404);    
+  } else {
+    res.sendfile(file);
+  }
 });
 
 server.post('/attachment', function(req, res) {
