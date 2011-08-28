@@ -1,13 +1,12 @@
 {
 	"name": "upload.js",
 	"version": "0.0.1",
-	"scripts": { "start": "node controller/index.js" },
+	"scripts": { "start": "node controller/web.js" },
 	"dependencies": {
 		"express": "2.2.0",
 		"formidable": "1.0.2",
 		"connect-form": "0.2.1",
-		"nodeunit": "0.5.3",
-		"zombie": "0.9.7",
 		"jade": "0.14.2"
 	}
 }
+
