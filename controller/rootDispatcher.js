@@ -52,10 +52,17 @@ function uploadFile(req, res) {
 		link = storage.put(file.path);
 	});
 	req.form.complete(function(err, fields, files) {
-		res.send('Success!', {
-			'Content-Type' : 'text/plain',
-			'Location' : link
-		}, 201);
+	  if(err) {
+	    console.log(err);
+      res.send('Error!', {
+        'Content-Type' : 'text/plain',
+      }, 500);
+	  } else {
+  		res.send('Success!', {
+  			'Content-Type' : 'text/plain',
+  			'Location' : link
+  		}, 201);
+	  }
 	});
 }
 
