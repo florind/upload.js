@@ -51,17 +51,11 @@ function uploadFile(req, res) {
 	req.form.on("file", function(name, file) {
 		link = storage.put(file.path);
 	});
-	req.form.on("error", function(err) {
-    console.log(err);
-    res.send('Error!', {
-      'Content-Type' : 'text/plain',
-    }, 500);
-  });
 	req.form.complete(function(err, fields, files) {
 		res.send('Success!', {
 			'Content-Type' : 'text/plain',
 			'Location' : link
-		}, 201);	  
+		}, 201);
 	});
 }
 
