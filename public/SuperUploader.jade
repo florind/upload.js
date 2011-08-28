@@ -1,68 +1,68 @@
 html
-	head
-		title= 'SuperUpload'
-		
-		script(type='text/javascript', src='http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js')
-		
-		//don't remove the CR at the end of the script declaration or zombie will barf running inBrowserTest.js
-		script(type='text/javascript')\n
-			$(function() {
-				$('input:file').change(function(evt, input) {
-					$('#statusText').show();
-					var theFile = $('#uploadfile').attr('files')[0];
-					var formData = new FormData();
-					formData.append(theFile.name, theFile);
+  head
+    title= 'SuperUpload'
+    
+    script(type='text/javascript', src='http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js')
+    
+    //don't remove the CR at the end of the script declaration or zombie will barf running inBrowserTest.js
+    script(type='text/javascript')\n
+      $(function() {
+        $('input:file').change(function(evt, input) {
+          $('#statusText').show();
+          var theFile = $('#uploadfile').attr('files')[0];
+          var formData = new FormData();
+          formData.append(theFile.name, theFile);
 
-					var xhr = new XMLHttpRequest();
-					xhr.upload.addEventListener("progress", updateProgress, false);
-					var statusDiv = $('#uploadStatus');
-					xhr.onreadystatechange = function() {
-						if(xhr.readyState == 4) {
-							if(xhr.status == 201) {
-								//embed link in page
-								var createdResourceLink = xhr.getResponseHeader('Location');
-								//statusDiv.html('<a href="' + createdResourceLink + '">' + 'Uploaded to here</a>');
-								//set the link to form for posting
-								document.uploadForm.fileLink.value = createdResourceLink;
-								//enable the Save button
-								document.uploadForm.Save.disabled = false;
-							} else {
-								statusDiv.html('error[' + xhr.status + ']:' + xhr.responseText);
-							}
-						}
-					};
-					xhr.open('POST', '/upload', true);
-					xhr.send(formData);
-				});
-			});
+          var xhr = new XMLHttpRequest();
+          xhr.upload.addEventListener("progress", updateProgress, false);
+          var statusDiv = $('#uploadStatus');
+          xhr.onreadystatechange = function() {
+            if(xhr.readyState == 4) {
+              if(xhr.status == 201) {
+                //embed link in page
+                var createdResourceLink = xhr.getResponseHeader('Location');
+                //statusDiv.html('<a href="' + createdResourceLink + '">' + 'Uploaded to here</a>');
+                //set the link to form for posting
+                document.uploadForm.fileLink.value = createdResourceLink;
+                //enable the Save button
+                document.uploadForm.Save.disabled = false;
+              } else {
+                statusDiv.html('error[' + xhr.status + ']:' + xhr.responseText);
+              }
+            }
+          };
+          xhr.open('POST', '/upload', true);
+          xhr.send(formData);
+        });
+      });
 
-			function updateProgress(evt) {
-				var statusDiv = $('#uploadStatus');
-				if(evt.lengthComputable) {
-					var percentComplete = Math.round((evt.loaded / evt.total) * 100);
-					statusDiv.html(percentComplete + "%. ");
-				} else {
-					statusDiv.html('uploading...');
-				}
-			}
-		
-	body
-		h2= 'SuperUpload'
-		form(name='uploadForm', id='uploadForm', action='/attachment', method='post')
-			input(type='hidden', name='fileLink')
-			table
-				tr
-					td
-						input(type='file', id='uploadfile', name='uploadfile')
-				tr
-					td
-						div(style='float:left;')= '&nbsp;'
-						div(style='float:left;display:none;', id='statusText')= 'Status:&nbsp;&nbsp;'
-						div(style='float:left;', id='uploadStatus')
-				tr
-					td
-						textarea(name='comment', rows='5', cols='30')
-				tr
-					td(align='right')
-						input(name='Save', type='submit', value='Save', disabled='true')
-	
+      function updateProgress(evt) {
+        var statusDiv = $('#uploadStatus');
+        if(evt.lengthComputable) {
+          var percentComplete = Math.round((evt.loaded / evt.total) * 100);
+          statusDiv.html(percentComplete + "%. ");
+        } else {
+          statusDiv.html('uploading...');
+        }
+      }
+    
+  body
+    h2= 'SuperUpload'
+    form(name='uploadForm', id='uploadForm', action='/attachment', method='post')
+      input(type='hidden', name='fileLink')
+      table
+        tr
+          td
+            input(type='file', id='uploadfile', name='uploadfile')
+        tr
+          td
+            div(style='float:left;')= '&nbsp;'
+            div(style='float:left;display:none;', id='statusText')= 'Status:&nbsp;&nbsp;'
+            div(style='float:left;', id='uploadStatus')
+        tr
+          td
+            textarea(name='comment', rows='5', cols='30')
+        tr
+          td(align='right')
+            input(name='Save', type='submit', value='Save', disabled='true')
+  
